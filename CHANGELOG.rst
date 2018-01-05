@@ -8,6 +8,14 @@ This document describes changes between each past release.
 
 - Nothing changed yet.
 
+2.0.1 (2017-01-05)
+------------------
+
+Fixed
+=====
+
+- Fix packaging of the templates. Some Jinja2 templates were not included in the distributed tarball (#305)
+
 
 2.0 (2017-12-27)
 ----------------

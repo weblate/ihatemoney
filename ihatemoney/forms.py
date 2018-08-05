@@ -16,6 +16,11 @@ import email_validator
 from ihatemoney.models import Project, Person
 from ihatemoney.utils import slugify, eval_arithmetic_expression
 
+def strip_filter(string):
+    try:
+        return string.strip()
+    except:
+        return string
 
 def get_billform_for(project, set_default=True, **kwargs):
     """Return an instance of BillForm configured for a particular project.
@@ -174,7 +179,7 @@ class BillForm(FlaskForm):
 
 
 class MemberForm(FlaskForm):
-    name = StringField(_("Name"), validators=[Required()])
+    name = StringField(_("Name"), validators=[Required()], filters=[strip_filter,])
 
     weight_validators = [NumberRange(min=0.1, message=_("Weights should be positive"))]
     weight = CommaDecimalField(_("Weight"), default=1,

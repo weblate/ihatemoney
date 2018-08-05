@@ -507,4 +507,3 @@ msgstr "Solde"
 
 #~ msgid "Invite"
 #~ msgstr "Invitez"
-

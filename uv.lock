@@ -504,7 +504,7 @@ wheels = [
 
 [[package]]
 name = "ihatemoney"
-version = "7.1.1"
+version = "7.1.2.dev0"
 source = { editable = "." }
 dependencies = [
     { name = "cachetools" },

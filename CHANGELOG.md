@@ -5,8 +5,18 @@ This document describes changes between each past release.
 ## 7.1.2 (unreleased)
 ---------------------
 
-### Fixed
+### Added
+- Add ability to filter expenses 🎉 (#1374)
+
+### Changed
 - Fix first-database migration deadlock on MySQL 8 by closing the connection opened in `_pre_alembic_db` (#1457)
+- Various UI improvements (#1452, #1456, #1459)
+- Update translations (#1467)
+
+### Development stuff
+- CI: update Ubuntu version (#1463)
+- Add PyPI trusted publisher Github Action (#1449)
+- Fix some ruff warnings (#1468)
 
 
 ## 7.1.1 (2026-05-09)
@@ -54,7 +64,7 @@ Non functional version, use 7.1.1
 - Add support for python 3.12 (#757)
 - Add translations for Azerbaijani, Breton, Danish, Basque, and Occitan
 
-## Changed
+### Changed
 
 - Update translations for Catalan, Persian, Hungarian, Japanese,
   Portuguese, Brazilian Portuguese, and Telugu

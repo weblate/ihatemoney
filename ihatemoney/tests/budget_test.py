@@ -2050,9 +2050,9 @@ class TestBudget(IhatemoneyTestCase):
 
         # check if weights of the users are 1, 1.1, 1.15 respectively
         resp = self.client.get("/raclette/")
-        assert 'zorglub<span class="light">(x1)</span>' in resp.data.decode("utf-8")
-        assert 'tata<span class="light">(x1.1)</span>' in resp.data.decode("utf-8")
-        assert 'jeanne<span class="light">(x1.15)</span>' in resp.data.decode("utf-8")
+        assert 'zorglub<span class="light">&nbsp;(x1)</span>' in resp.data.decode("utf-8")
+        assert 'tata<span class="light">&nbsp;(x1.1)</span>' in resp.data.decode("utf-8")
+        assert 'jeanne<span class="light">&nbsp;(x1.15)</span>' in resp.data.decode("utf-8")
 
     def test_amount_too_high(self):
         self.post_project("raclette")

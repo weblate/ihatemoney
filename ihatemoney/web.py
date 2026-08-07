@@ -62,6 +62,7 @@ from ihatemoney.forms import (
 from ihatemoney.history import get_history, purge_history
 from ihatemoney.models import Bill, BillType, LoggingMode, Person, Project, db
 from ihatemoney.utils import (
+    has_claim,
     Redirect303,
     csv2list_of_dicts,
     flash_email_error,
@@ -72,6 +73,7 @@ from ihatemoney.utils import (
     list_of_dicts2json,
     render_localized_template,
     send_email,
+    set_claim,
 )
 
 main = Blueprint("main", __name__)
@@ -96,8 +98,7 @@ def requires_admin(bypass=None):
             is_admin_auth_bypassed = False
             if bypass is not None and current_app.config.get(bypass[0]) == bypass[1]:
                 is_admin_auth_bypassed = True
-            is_admin = session.get("is_admin")
-            if is_admin or is_admin_auth_bypassed:
+            if has_claim(session, "is_admin") or is_admin_auth_bypassed:
                 return f(*args, **kws)
             raise Redirect303(url_for(".admin", goto=request.path))
 
@@ -163,13 +164,12 @@ def pull_project(endpoint, values):
         if not project:
             raise Redirect303(url_for(".create_project", project_id=project_id))
 
-        is_admin = session.get("is_admin")
         is_invitation = endpoint == "main.join_project"
         is_feed = endpoint == "main.feed"
         is_demo = project_id == "demo"
         if (
             project.id in session.get("projects", {})
-            or is_admin
+            or has_claim(session, "is_admin")
             or is_invitation
             or is_feed
             or is_demo
@@ -218,7 +218,7 @@ def admin():
         if check_password_hash(
             current_app.config["ADMIN_PASSWORD"], form.admin_password.data
         ):
-            session["is_admin"] = True
+            set_claim(session, "is_admin")
             session.update()
             return redirect(goto)
         if limiter.current_limit is not None:

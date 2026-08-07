@@ -492,3 +492,24 @@ def get_owers_label(active_members, bill_owers):
     if active_owers_count > len(active_members) / 2 + 1:
         return ("everyone_but", excluded)
     return ("list", bill_owers)
+
+
+def set_claim(session, claim_name: str):
+    """
+    Store a claim in session
+    """
+    if "authz_claims" not in session:
+        session["authz_claims"] = []
+    if "claim_name" not in session["authz_claims"]:
+        session["authz_claims"].append(claim_name)
+
+
+def has_claim(session, claim_name: str) -> bool:
+    """
+    Tells if the session contains a given claim
+    """
+    return (
+            "authz_claims" in session
+            and isinstance(session["authz_claims"], list)
+            and claim_name in session["authz_claims"]
+    )

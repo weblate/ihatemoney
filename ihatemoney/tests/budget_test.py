@@ -672,7 +672,7 @@ class TestBudget(IhatemoneyTestCase):
         with self.client as c:
             resp = c.post("/admin?goto=%2Fraclette", data={"admin_password": "pass"})
             assert "Authentication" not in resp.data.decode("utf-8")
-            assert session["is_admin"]
+            assert session["authz_claims"] == ["is_admin"]
 
     def test_authentication_with_upper_case(self):
         self.post_project("Raclette")

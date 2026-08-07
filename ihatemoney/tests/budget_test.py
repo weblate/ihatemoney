@@ -272,7 +272,7 @@ class TestBudget(IhatemoneyTestCase):
                 )
 
             # session is updated
-            assert session["raclette"]
+            assert "raclette" in session["projects"]
 
             # project is created
             assert len(models.Project.query.all()) == 1
@@ -331,7 +331,7 @@ class TestBudget(IhatemoneyTestCase):
             )
 
             # session is updated
-            assert session["raclette"]
+            assert "raclette" in session["projects"]
 
             # project is created
             assert len(models.Project.query.all()) == 1
@@ -657,8 +657,7 @@ class TestBudget(IhatemoneyTestCase):
             )
 
             assert "Authentication" not in resp.data.decode("utf-8")
-            assert "raclette" in session
-            assert session["raclette"]
+            assert "raclette" in session["projects"]
 
             # logout should work with POST only
             resp = c.get("/exit")
@@ -666,7 +665,7 @@ class TestBudget(IhatemoneyTestCase):
 
             # logout should wipe the session out
             c.post("/exit")
-            assert "raclette" not in session
+            assert "projects" not in session
 
         # test that with admin credentials, one can access every project
         self.app.config["ADMIN_PASSWORD"] = generate_password_hash("pass")
@@ -685,8 +684,8 @@ class TestBudget(IhatemoneyTestCase):
             )
 
             assert "Authentication" not in resp.data.decode("utf-8")
-            assert "raclette" in session
-            assert session["raclette"]
+            assert "raclette" in session["projects"]
+            assert session["projects"]["raclette"] == "Raclette"
 
     def test_admin_authentication(self):
         self.app.config["ADMIN_PASSWORD"] = generate_password_hash("pass")
@@ -2090,7 +2089,6 @@ class TestBudget(IhatemoneyTestCase):
 
         with self.client as c:
             c.post("/authenticate", data={"id": "raclette", "password": "raclette"})
-            assert session["raclette"]
             # New behavior
             assert isinstance(session["projects"], dict)
             # Now, go back to the past

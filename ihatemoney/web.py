@@ -166,7 +166,14 @@ def pull_project(endpoint, values):
         is_admin = session.get("is_admin")
         is_invitation = endpoint == "main.join_project"
         is_feed = endpoint == "main.feed"
-        if session.get(project.id) or is_admin or is_invitation or is_feed:
+        is_demo = project_id == "demo"
+        if (
+            project.id in session.get("projects", {})
+            or is_admin
+            or is_invitation
+            or is_feed
+            or is_demo
+        ):
             # add project into kwargs and call the original function
             g.project = project
         else:
@@ -237,7 +244,6 @@ def set_authorized_project(project: Project):
     else:
         # add the project on the top of the list
         session["projects"] = {**new_project, **session["projects"]}
-    session[project.id] = True
     # Set session to permanent to make language choice persist
     session.permanent = True
     session.update()
@@ -280,7 +286,7 @@ def authenticate(project_id=None):
         )
 
     # if credentials are already in session, redirect
-    if session.get(project_id):
+    if project.id in session.get("projects", {}):
         g.project = project
         return redirect(url_for(".list_bills"))
 
@@ -612,7 +618,6 @@ def demo():
         raise Redirect303(url_for(".create_project", project_id="demo"))
     if not project and is_demo_project_activated:
         project = Project.create_demo_project()
-    session[project.id] = True
     return redirect(url_for(".list_bills", project_id=project.id))
 
 

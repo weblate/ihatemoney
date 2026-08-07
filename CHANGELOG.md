@@ -2,10 +2,13 @@
 
 This document describes changes between each past release.
 
-## 7.2.1 (unreleased)
+## 7.2.1 (2026-08-07)
 ---------------------
 
-- Nothing changed yet.
+SECURITY RELEASE: UPDATE ASAP please
+
+### Fixed
+- Fix a session collision name possibility
 
 
 ## 7.2.0 (2026-08-02)
